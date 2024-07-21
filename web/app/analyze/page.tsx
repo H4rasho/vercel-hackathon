@@ -16,7 +16,10 @@ export default async function Analyze({
       </p>
       <h1>{seo.title}</h1>
       <p>{seo.description}</p>
-      <section>
+      <section className="flex flex-col gap-4">
+        <h2 className="mt-10 scroll-m-20  pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
+          Images
+        </h2>
         {seo.images.map(({ src, alt }) => (
           <GetAlt src={src} alt={alt} />
         ))}
