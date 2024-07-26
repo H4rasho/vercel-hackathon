@@ -14,6 +14,8 @@ RUN npm install
 # Instala los navegadores y las dependencias del sistema para Playwright
 RUN npx -y playwright@1.45.1 install --with-deps
 
+RUN npx -y playwright install --with-deps chromium
+
 # Copia el resto de los archivos de la aplicación
 COPY . .
 
