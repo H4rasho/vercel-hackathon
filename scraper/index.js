@@ -43,7 +43,7 @@ const scrape = async (web) => {
   return { title, url, images, description };
 };
 
-app.get("/scrape", (req, res) => {
+app.get("/scraper", (req, res) => {
   const { web } = req.query;
   if (!web) {
     return res.status(400).json({ message: "Please provide a web url" });
