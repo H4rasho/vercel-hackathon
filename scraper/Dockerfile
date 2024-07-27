@@ -8,7 +8,7 @@ COPY package*.json ./
 
 RUN npm install
 
-RUN npx -y playwright@1.45.1 install --with-deps
+RUN npx playwright install
 
 COPY --chown=node:node . .
 
