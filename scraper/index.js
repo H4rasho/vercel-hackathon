@@ -6,21 +6,6 @@ const app = express();
 
 const PORT = process.env.PORT || 4000;
 
-const WhiteList = ["http://localhost:3000"];
-
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (WhiteList.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept",
-  );
-  res.header("Access-Control-Allow-Methods", "GET");
-  next();
-});
-
 const scrape = async (web) => {
   const browser = await chromium.launch();
   const page = await browser.newPage();
