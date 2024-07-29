@@ -27,7 +27,7 @@ USER ${TEST_USER}
 
 RUN echo "test user: $TEST_USER"
 
-RUN npx playwright install
+RUN npx playwright install chromium
 
 EXPOSE 8080
 
