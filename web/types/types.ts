@@ -1,9 +1,11 @@
 export interface ScrapeResponse {
   title: string;
   description: string;
-  images: {
-    src: string;
-    alt: string;
-  }[];
+  images: ScraperImage[];
   url: string;
+}
+
+export interface ScraperImage {
+  src: string;
+  alt: string;
 }
