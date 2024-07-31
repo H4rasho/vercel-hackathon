@@ -12,7 +12,7 @@ const scrape = async (web) => {
   await page.goto(web);
   const title = await page.title();
   const url = page.url();
-  const images = await page.$$eval("img", (imgs) =>
+  const pageImages = await page.$$eval("img", (imgs) =>
     imgs.map((img) => {
       return {
         src: img.src,
@@ -20,11 +20,16 @@ const scrape = async (web) => {
       };
     }),
   );
+
   const description = await page.$eval(
     "meta[name='description']",
     (meta) => meta.content,
   );
   await browser.close();
+
+  const uniqueImages = new Map(pageImages.map((image) => [image.src, image]));
+  const images = Array.from(uniqueImages.values());
+
   return { title, url, images, description };
 };
 
