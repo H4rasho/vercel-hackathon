@@ -5,14 +5,15 @@ import "dotenv/config";
 const app = express();
 
 const PORT = process.env.PORT || 4000;
+const OFFSET = 5;
 
-const scrape = async (web) => {
+const scrape = async (web, page) => {
   const browser = await chromium.launch();
-  const page = await browser.newPage();
-  await page.goto(web);
-  const title = await page.title();
-  const url = page.url();
-  const pageImages = await page.$$eval("img", (imgs) =>
+  const webPage = await browser.newPage();
+  await webPage.goto(web, { waitUntil: "domcontentloaded" });
+  const title = await webPage.title();
+  const url = webPage.url();
+  const pageImages = await webPage.$$eval("img", (imgs) =>
     imgs.map((img) => {
       return {
         src: img.src,
@@ -21,24 +22,36 @@ const scrape = async (web) => {
     }),
   );
 
-  const description = await page.$eval(
+  const description = await webPage.$eval(
     "meta[name='description']",
     (meta) => meta.content,
   );
   await browser.close();
 
   const uniqueImages = new Map(pageImages.map((image) => [image.src, image]));
-  const images = Array.from(uniqueImages.values());
+  const images = Array.from(uniqueImages.values()).slice(
+    (page - 1) * OFFSET,
+    page * OFFSET,
+  );
 
-  return { title, url, images, description };
+  return {
+    title,
+    url,
+    imageInfo: {
+      images,
+      totalImages: pageImages.length,
+      totalPages: Math.ceil(pageImages.length / OFFSET),
+    },
+    description,
+  };
 };
 
 app.get("/scraper", (req, res) => {
-  const { web } = req.query;
+  const { web, page = 1 } = req.query;
   if (!web) {
     return res.status(400).json({ message: "Please provide a web url" });
   }
-  scrape(web)
+  scrape(web, page)
     .then((data) => {
       res.json(data);
     })
