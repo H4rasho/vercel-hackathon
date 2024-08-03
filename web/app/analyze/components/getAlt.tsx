@@ -9,13 +9,19 @@ import {
 import { GeneratedAlt } from "./generatedAlt";
 import { ScraperImage } from "@/types/types";
 
-export async function GetAlt(image: ScraperImage) {
+export async function GetAlt({
+  image,
+  index,
+}: {
+  image: ScraperImage;
+  index: number;
+}) {
   const completion = await generateAlt(image);
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Image</CardTitle>
+        <CardTitle>Image #{index}</CardTitle>
         <CardDescription>Original Alt: {image.alt}</CardDescription>
       </CardHeader>
       <CardContent className="flex">

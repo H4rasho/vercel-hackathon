@@ -1,8 +1,14 @@
 export interface ScrapeResponse {
   title: string;
   description: string;
-  images: ScraperImage[];
+  imagesInfo: ImagesInfo;
   url: string;
+}
+
+export interface ImagesInfo {
+  images: ScraperImage[];
+  totalImages: number;
+  totalPages: number;
 }
 
 export interface ScraperImage {

@@ -6,12 +6,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ScraperImage } from "@/types/types";
 
-export function CardImageLoader({ src, alt }: { src: string; alt: string }) {
+export function CardImageLoader({
+  image,
+  index,
+}: {
+  image: ScraperImage;
+  index: number;
+}) {
+  const { src, alt } = image;
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Image</CardTitle>
+        <CardTitle>Image #{index}</CardTitle>
         <CardDescription>Original Alt: {alt}</CardDescription>
       </CardHeader>
       <CardContent className="flex">

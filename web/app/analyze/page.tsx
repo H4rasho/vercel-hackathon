@@ -1,17 +1,27 @@
-export const revalidate = 0;
+export const revalidate = 1800;
 import { Suspense } from "react";
 import { GetAlt } from "./components/getAlt";
 import { getSeo } from "@/services/scraper-service";
 import { CardImageLoader } from "./components/loader";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 export default async function Analyze({
   searchParams,
 }: {
   searchParams: { url: string; page: number };
 }) {
-  const { url, page = 0 } = searchParams;
-  const seo = await getSeo(url);
-  const images = seo.images.slice(0, 5);
+  const { url, page = 1 } = searchParams;
+  const currentPage = Number(page);
+  const seo = await getSeo(url, currentPage);
+  const { images, totalPages } = seo.imagesInfo;
 
   return (
     <main>
@@ -34,14 +44,43 @@ export default async function Analyze({
         <h2 className="mt-10 scroll-m-20 border-b pb-2  text-3xl font-semibold tracking-tight transition-colors ">
           Founded Images
         </h2>
-        {images.map(({ src, alt }) => (
+        {images.map((image, index) => (
           <Suspense
-            key={src}
-            fallback={<CardImageLoader src={src} alt={alt} />}
+            key={image.src}
+            fallback={
+              <CardImageLoader
+                image={image}
+                index={(page - 1) * 5 + index + 1}
+              />
+            }
           >
-            <GetAlt src={src} alt={alt} />
+            <GetAlt image={image} index={(page - 1) * 5 + index + 1} />
           </Suspense>
         ))}
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href={`/analyze?url=${url}&page=${currentPage - 1}`}
+              />
+            </PaginationItem>
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <PaginationItem key={index}>
+                <PaginationLink href={`/analyze?url=${url}&page=${index + 1}`}>
+                  {index + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext
+                href={`/analyze?url=${url}&page=${currentPage + 1}`}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </section>
     </main>
   );
