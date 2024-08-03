@@ -37,10 +37,10 @@ const scrape = async (web, page) => {
   return {
     title,
     url,
-    imageInfo: {
+    imagesInfo: {
       images,
-      totalImages: pageImages.length,
-      totalPages: Math.ceil(pageImages.length / OFFSET),
+      totalImages: uniqueImages.size,
+      totalPages: Math.ceil(uniqueImages.size / OFFSET),
     },
     description,
   };
