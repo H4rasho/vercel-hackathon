@@ -56,6 +56,7 @@ app.get("/scraper", (req, res) => {
       res.json(data);
     })
     .catch((error) => {
+      console.error(error);
       res.status(500).json({ message: error.message });
     });
 });
