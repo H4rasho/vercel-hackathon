@@ -13,7 +13,7 @@ ARG TEST_USER="playwright"
 RUN npm install -g pnpm@7.5.0
 
 # Copy the necessary file into image
-COPY package.json pnpm-lock.yaml index.js ./
+COPY package.json pnpm-lock.yaml server.js ./
 
 # Install
 RUN pnpm install 
