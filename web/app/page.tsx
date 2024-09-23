@@ -8,13 +8,16 @@ async function scraperAction(data: FormData) {
   redirect("/analyze?url=" + url);
 }
 
-export default async function Chat({ params }: { params: { url: string } }) {
+export default async function Chat() {
   return (
-    <main>
-      <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
-        <form action={scraperAction}>
+    <main className="grid place-items-center min-h-full">
+      <div className="flex flex-col items-center w-full max-w-screen-md mx-auto">
+        <h1 className="text-6xl font-bold text-center text-balance">
+          Generate alt text for you website with AI
+        </h1>
+        <form className="w-full flex justify-center" action={scraperAction}>
           <input
-            className="fixed bottom-0 w-full max-w-md p-2 mb-8 border border-gray-300 rounded shadow-xl"
+            className="w-full px-2 py-4 mb-8 mt-10 border border-gray-300 rounded shadow-md"
             placeholder="https://example.com"
             name="url"
           />
